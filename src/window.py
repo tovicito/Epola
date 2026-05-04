@@ -45,6 +45,7 @@ class EpolaWindow(Adw.ApplicationWindow):
         self.load_css()
         self.settings = Gio.Settings.new("tte.nemas.Epola")
         self.pkg_manager = PackageManager()
+        self.pkg_manager.enabled_managers = list(self.settings.get_strv("enabled-managers"))
         self.current_pkg = None
         self.available_updates = []
 
@@ -204,22 +205,22 @@ class EpolaWindow(Adw.ApplicationWindow):
 
         button.set_sensitive(False)
         if pkg.get('can_update'):
-             threading.Thread(target=self.run_op, args=(manager.update, pkg, _("Actualizado")), daemon=True).start()
+             threading.Thread(target=self.run_op, args=(manager.update, pkg, "update"), daemon=True).start()
         elif pkg['installed']:
-            threading.Thread(target=self.run_op, args=(manager.uninstall, pkg, _("Desinstalar")), daemon=True).start()
+            threading.Thread(target=self.run_op, args=(manager.uninstall, pkg, "uninstall"), daemon=True).start()
         else:
-            threading.Thread(target=self.run_op, args=(manager.install, pkg, _("Instalar")), daemon=True).start()
+            threading.Thread(target=self.run_op, args=(manager.install, pkg, "install"), daemon=True).start()
 
-    def run_op(self, func, pkg, action_name):
+    def run_op(self, func, pkg, action_type):
         res = func(pkg['id'])
-        GLib.idle_add(self.on_op_complete, res.returncode == 0, action_name, pkg)
+        GLib.idle_add(self.on_op_complete, res.returncode == 0, action_type, pkg)
 
-    def on_op_complete(self, success, action_name, pkg):
+    def on_op_complete(self, success, action_type, pkg):
         self.detail_action_button.set_sensitive(True)
         if success:
-            if action_name == _("Instalado"): pkg['installed'] = True
-            elif action_name == _("Desinstalar"): pkg['installed'] = False
-            elif action_name == _("Actualizado"): pkg['can_update'] = False
+            if action_type == "install": pkg['installed'] = True
+            elif action_type == "uninstall": pkg['installed'] = False
+            elif action_type == "update": pkg['can_update'] = False
 
             self.update_detail_button()
         else:
