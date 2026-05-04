@@ -1,21 +1,26 @@
-pkgdatadir = get_option('prefix') / get_option('datadir') / meson.project_name()
-moduledir = pkgdatadir / 'epola'
-gnome = import('gnome')
+src_sources = [
+  'main.py',
+  'window.py',
+  'managers.py',
+  'app_info.py',
+]
+
+install_data(src_sources, install_dir: get_option('datadir') / 'epola')
 
 gnome.compile_resources('epola',
   'epola.gresource.xml',
   gresource_bundle: true,
   install: true,
-  install_dir: pkgdatadir,
+  install_dir: get_option('datadir') / 'epola',
 )
 
-python = import('python')
+python3 = import('python').find_installation()
 
 conf = configuration_data()
-conf.set('PYTHON', python.find_installation('python3').full_path())
+conf.set('PYTHON', python3.full_path())
 conf.set('VERSION', meson.project_version())
 conf.set('localedir', get_option('prefix') / get_option('localedir'))
-conf.set('pkgdatadir', pkgdatadir)
+conf.set('pkgdatadir', get_option('prefix') / get_option('datadir') / 'epola')
 
 configure_file(
   input: 'epola.in',
@@ -25,11 +30,3 @@ configure_file(
   install_dir: get_option('bindir'),
   install_mode: 'rwxr-xr-x'
 )
-
-epola_sources = [
-  '__init__.py',
-  'main.py',
-  'window.py',
-]
-
-install_data(epola_sources, install_dir: moduledir)

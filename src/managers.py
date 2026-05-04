@@ -1,5 +1,9 @@
+# managers.py
 import subprocess
 import os
+import gettext
+
+_ = gettext.gettext
 
 class BaseManager:
     def __init__(self, name, icon):
@@ -73,7 +77,7 @@ class AptManager(BaseManager):
                         'id': pkg_name,
                         'name': pkg_name,
                         'manager': 'apt',
-                        'description': 'Actualización disponible'
+                        'description': _('Actualización disponible')
                     })
             return updates
         except:
@@ -119,8 +123,6 @@ class FlatpakManager(BaseManager):
 
     def get_updates(self):
         try:
-            res = subprocess.run(["flatpak", "update", "--no-deploy"], capture_output=True, text=True)
-            # This is complex to parse without actual output, but flatpak has a better way
             res = subprocess.run(["flatpak", "remote-ls", "--updates", "--columns=application,name"], capture_output=True, text=True)
             updates = []
             for line in res.stdout.strip().split('\n'):
@@ -130,7 +132,7 @@ class FlatpakManager(BaseManager):
                         'id': parts[0].strip(),
                         'name': parts[1].strip(),
                         'manager': 'flatpak',
-                        'description': 'Actualización disponible (Flatpak)'
+                        'description': _('Actualización disponible (Flatpak)')
                     })
             return updates
         except:
@@ -153,7 +155,7 @@ class SnapManager(BaseManager):
             res = subprocess.run(["snap", "find", query], capture_output=True, text=True)
             results = []
             lines = res.stdout.strip().split('\n')
-            if len(lines) > 1: # Skip header
+            if len(lines) > 1:
                 for line in lines[1:]:
                     parts = line.split()
                     if len(parts) >= 1:
@@ -185,7 +187,7 @@ class SnapManager(BaseManager):
                             'id': parts[0],
                             'name': parts[0],
                             'manager': 'snap',
-                            'description': 'Actualización disponible (Snap)'
+                            'description': _('Actualización disponible (Snap)')
                         })
             return updates
         except:
@@ -233,7 +235,7 @@ class DnfManager(BaseManager):
                 parts = line.split()
                 if len(parts) >= 1 and '.' in parts[0]:
                     pkg_name = parts[0].split('.')[0]
-                    updates.append({'id': pkg_name, 'name': pkg_name, 'manager': 'dnf'})
+                    updates.append({'id': pkg_name, 'name': pkg_name, 'manager': 'dnf', 'description': _('Actualización disponible')})
             return updates
         except: return []
 
@@ -274,7 +276,7 @@ class PacmanManager(BaseManager):
             for line in res.stdout.strip().split('\n'):
                 if line:
                     pkg_name = line.split(' ')[0]
-                    updates.append({'id': pkg_name, 'name': pkg_name, 'manager': 'pacman'})
+                    updates.append({'id': pkg_name, 'name': pkg_name, 'manager': 'pacman', 'description': _('Actualización disponible')})
             return updates
         except: return []
 

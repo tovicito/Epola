@@ -35,22 +35,52 @@ class AppInfoProvider:
         return info
 
     @staticmethod
+    def get_package_owner(filepath):
+        # Try dpkg
+        try:
+            res = subprocess.run(["dpkg", "-S", filepath], capture_output=True, text=True)
+            if res.returncode == 0:
+                return res.stdout.split(':')[0], 'apt'
+        except: pass
+
+        # Try rpm
+        try:
+            res = subprocess.run(["rpm", "-qf", filepath], capture_output=True, text=True)
+            if res.returncode == 0:
+                return res.stdout.strip(), 'dnf'
+        except: pass
+
+        # Try pacman
+        try:
+            res = subprocess.run(["pacman", "-Qo", filepath], capture_output=True, text=True)
+            if res.returncode == 0:
+                return res.stdout.split(' is owned by ')[1].split(' ')[0], 'pacman'
+        except: pass
+
+        return None, None
+
+    @staticmethod
     def get_random_apps(count=12):
         files = AppInfoProvider.get_desktop_files()
         if not files:
             return []
 
-        selected_files = random.sample(files, min(count, len(files)))
+        selected_files = random.sample(files, min(count * 2, len(files)))
         apps = []
         for f in selected_files:
+            if len(apps) >= count: break
+
+            pkg_id, manager = AppInfoProvider.get_package_owner(f)
+            if not pkg_id: continue
+
             info = AppInfoProvider.parse_desktop_file(f)
             if info['name'] and info['icon']:
                 apps.append({
-                    'id': os.path.basename(f).replace('.desktop', ''),
+                    'id': pkg_id,
                     'name': info['name'],
                     'description': info['comment'],
                     'icon': info['icon'],
-                    'manager': 'apt', # Default for system apps
+                    'manager': manager,
                     'installed': True
                 })
         return apps
@@ -63,12 +93,15 @@ class AppInfoProvider:
         for f in files:
             info = AppInfoProvider.parse_desktop_file(f)
             if query in info['name'].lower() or query in info['comment'].lower():
+                pkg_id, manager = AppInfoProvider.get_package_owner(f)
+                if not pkg_id: continue
+
                 results.append({
-                    'id': os.path.basename(f).replace('.desktop', ''),
+                    'id': pkg_id,
                     'name': info['name'],
                     'description': info['comment'],
                     'icon': info['icon'],
-                    'manager': 'apt',
+                    'manager': manager,
                     'installed': True
                 })
         return results
