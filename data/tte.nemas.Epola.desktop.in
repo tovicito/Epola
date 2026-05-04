@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=epola
+Exec=epola
+Icon=tte.nemas.Epola
+Terminal=false
+Type=Application
+Categories=Utility;
+Keywords=GTK;
+StartupNotify=true
+DBusActivatable=true

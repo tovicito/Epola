@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=tte.nemas.Epola
+Exec=@bindir@/epola --gapplication-service

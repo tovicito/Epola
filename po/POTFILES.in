@@ -1,0 +1,8 @@
+# List of source files containing translatable strings.
+# Please keep this file sorted alphabetically.
+data/tte.nemas.Epola.desktop.in
+data/tte.nemas.Epola.metainfo.xml.in
+data/tte.nemas.Epola.gschema.xml
+src/main.py
+src/window.py
+src/window.ui
