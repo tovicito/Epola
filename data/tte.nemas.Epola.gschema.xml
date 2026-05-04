@@ -1,5 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="epola">
-	<schema id="tte.nemas.Epola" path="/tte/nemas/Epola/">
-	</schema>
+  <schema id="tte.nemas.Epola" path="/tte/nemas/Epola/">
+    <key name="first-run" type="b">
+      <default>true</default>
+      <summary>First run</summary>
+      <description>Whether this is the first time the application is run.</description>
+    </key>
+    <key name="dark-mode" type="b">
+      <default>false</default>
+      <summary>Dark mode</summary>
+      <description>Whether to use dark mode.</description>
+    </key>
+    <key name="language" type="s">
+      <default>'system'</default>
+      <summary>Language</summary>
+      <description>The language to use.</description>
+    </key>
+    <key name="enabled-managers" type="as">
+      <default>['apt']</default>
+      <summary>Enabled managers</summary>
+      <description>List of enabled package managers.</description>
+    </key>
+    <key name="auto-updates" type="b">
+      <default>false</default>
+      <summary>Auto updates</summary>
+      <description>Whether to check for updates automatically.</description>
+    </key>
+  </schema>
 </schemalist>

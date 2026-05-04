@@ -1,0 +1,48 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Epola\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-05-20 12:00+0000\n"
+"PO-Revision-Date: 2024-05-20 12:00+0000\n"
+"Last-Translator: Jules\n"
+"Language-Team: Spanish\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/window.ui:10
+msgid "Home"
+msgstr "Inicio"
+
+#: src/window.ui:20
+msgid "Updates"
+msgstr "Actualizaciones"
+
+#: src/window.ui:30
+msgid "Settings"
+msgstr "Configuración"
+
+#: src/window.py:50
+msgid "Install"
+msgstr "Instalar"
+
+#: src/window.py:51
+msgid "Uninstall"
+msgstr "Desinstalar"
+
+#: src/window.py:52
+msgid "Update"
+msgstr "Actualizar"
+
+#: src/setup.ui:10
+msgid "Welcome to Epola"
+msgstr "Bienvenido a Epola"
+
+#: src/setup.ui:20
+msgid "The best package manager for Linux"
+msgstr "El mejor gestor de paquetes para Linux"
+
+#: src/setup.ui:30
+msgid "Get Started"
+msgstr "Empezar"
