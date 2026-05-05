@@ -1,11 +1,12 @@
 src_sources = [
+  '__init__.py',
   'main.py',
   'window.py',
   'managers.py',
   'app_info.py',
 ]
 
-install_data(src_sources, install_dir: get_option('datadir') / 'epola')
+install_data(src_sources, install_dir: get_option('datadir') / 'epola' / 'epola')
 
 gnome.compile_resources('epola',
   'epola.gresource.xml',

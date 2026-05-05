@@ -6,7 +6,14 @@ import re
 class AppInfoProvider:
     @staticmethod
     def get_desktop_files():
-        paths = ['/usr/share/applications', '/usr/local/share/applications']
+        paths = [
+            '/usr/share/applications',
+            '/usr/local/share/applications',
+            os.path.expanduser('~/.local/share/applications'),
+            '/var/lib/flatpak/exports/share/applications',
+            os.path.expanduser('~/.local/share/flatpak/exports/share/applications'),
+            '/var/lib/snapd/desktop/applications'
+        ]
         desktop_files = []
         for path in paths:
             if os.path.exists(path):
@@ -36,6 +43,20 @@ class AppInfoProvider:
 
     @staticmethod
     def get_package_owner(filepath):
+        # Flatpak check
+        if 'flatpak' in filepath:
+            filename = os.path.basename(filepath)
+            # Flatpak desktop files are usually named like com.example.App.desktop
+            pkg_id = filename.replace('.desktop', '')
+            return pkg_id, 'flatpak'
+
+        # Snap check
+        if '/snapd/' in filepath:
+             filename = os.path.basename(filepath)
+             # Snaps are often named like appname_appname.desktop
+             pkg_id = filename.split('_')[0]
+             return pkg_id, 'snap'
+
         # Try dpkg
         try:
             res = subprocess.run(["dpkg", "-S", filepath], capture_output=True, text=True)
@@ -65,7 +86,7 @@ class AppInfoProvider:
         if not files:
             return []
 
-        selected_files = random.sample(files, min(count * 2, len(files)))
+        selected_files = random.sample(files, min(count * 5, len(files)))
         apps = []
         for f in selected_files:
             if len(apps) >= count: break
