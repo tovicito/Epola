@@ -1,9 +1,9 @@
 src_sources = [
-  '__init__.py',
-  'main.py',
-  'window.py',
-  'managers.py',
-  'app_info.py',
+  'epola/__init__.py',
+  'epola/main.py',
+  'epola/window.py',
+  'epola/managers.py',
+  'epola/app_info.py',
 ]
 
 install_data(src_sources, install_dir: get_option('datadir') / 'epola' / 'epola')
