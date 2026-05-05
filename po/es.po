@@ -11,38 +11,47 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/window.ui:10
+#: src/epola/window.ui:10
 msgid "Home"
 msgstr "Inicio"
 
-#: src/window.ui:20
+#: src/epola/window.ui:20
 msgid "Updates"
 msgstr "Actualizaciones"
 
-#: src/window.ui:30
+#: src/epola/window.ui:30
 msgid "Settings"
 msgstr "Configuración"
 
-#: src/window.py:50
+#: src/epola/window.py:150
 msgid "Install"
 msgstr "Instalar"
 
-#: src/window.py:51
+#: src/epola/window.py:151
 msgid "Uninstall"
 msgstr "Desinstalar"
 
-#: src/window.py:52
+#: src/epola/window.py:152
 msgid "Update"
 msgstr "Actualizar"
 
-#: src/setup.ui:10
-msgid "Welcome to Epola"
-msgstr "Bienvenido a Epola"
+#: src/epola/window.py:153
+msgid "All up to date"
+msgstr "Todo al día"
 
-#: src/setup.ui:20
-msgid "The best package manager for Linux"
-msgstr "El mejor gestor de paquetes para Linux"
+#: src/epola/window.py:154
+msgid "No updates available."
+msgstr "No hay actualizaciones disponibles."
 
-#: src/setup.ui:30
-msgid "Get Started"
-msgstr "Empezar"
+#: src/epola/window.py:155
+msgid "updates available"
+msgstr "actualizaciones disponibles"
+
+#: src/epola/window.py:156
+msgid "Last checked: "
+msgstr "Última comprobación: "
+
+#: src/epola/window.py:157
+msgid "No description available."
+msgstr "Sin descripción disponible."
+msg

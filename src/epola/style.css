@@ -1,0 +1,46 @@
+/* style.css */
+.luxury-title {
+    font-size: 42pt;
+    font-weight: 900;
+    margin-bottom: 8px;
+    letter-spacing: -1px;
+}
+
+.luxury-button {
+    font-size: 14pt;
+    font-weight: bold;
+    padding: 12px 32px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.caption-heading {
+    font-weight: bold;
+    font-size: 11pt;
+}
+
+.app-icon-shadow {
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
+}
+
+.dim-label {
+    opacity: 0.6;
+    font-size: 9pt;
+}
+
+/* Home tile styling */
+.app-tile {
+    border-radius: 20px;
+    transition: background 200ms ease;
+    padding: 16px;
+}
+
+.app-tile:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.dark .app-tile:hover {
+    background: rgba(255, 255, 255, 0.05);
+}

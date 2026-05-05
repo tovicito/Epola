@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="Adw" version="1.0"/>
+  <template class="EpolaWindow" parent="AdwApplicationWindow">
+    <property name="title" translatable="yes">Epola</property>
+    <property name="default-width">1000</property>
+    <property name="default-height">750</property>
+    <property name="content">
+      <object class="AdwToastOverlay" id="toast_overlay">
+        <property name="child">
+          <object class="AdwViewStack" id="main_stack">
+            <!-- SETUP WIZARD -->
+            <child>
+              <object class="AdwViewStackPage">
+                <property name="name">setup</property>
+                <property name="child">
+                  <object class="AdwToolbarView">
+                    <property name="content">
+                      <object class="GtkBox">
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <object class="AdwCarousel" id="setup_carousel">
+                            <property name="vexpand">True</property>
+                            <property name="allow-scroll-wheel">False</property>
+                            <property name="allow-mouse-drag">False</property>
+                            <!-- Step 1: Welcome -->
+                            <child>
+                              <object class="AdwStatusPage">
+                                <property name="icon-name">tte.nemas.Epola</property>
+                                <property name="title" translatable="yes">Bienvenido a Epola</property>
+                                <property name="description" translatable="yes">La tienda de aplicaciones más avanzada y elegante para Linux.</property>
+                                <child>
+                                  <object class="GtkButton">
+                                    <property name="label" translatable="yes">Empezar</property>
+                                    <property name="halign">center</property>
+                                    <style><class name="pill"/><class name="suggested-action"/></style>
+                                    <signal name="clicked" handler="on_setup_next_clicked"/>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                            <!-- Step 2: Language & Mode -->
+                            <child>
+                              <object class="AdwStatusPage">
+                                <property name="title" translatable="yes">Personalización</property>
+                                <property name="description" translatable="yes">Elige cómo quieres que se vea Epola.</property>
+                                <child>
+                                  <object class="AdwClamp">
+                                    <child>
+                                      <object class="GtkListBox">
+                                        <property name="selection-mode">none</property>
+                                        <style><class name="boxed-list"/></style>
+                                        <child>
+                                          <object class="AdwActionRow">
+                                            <property name="title" translatable="yes">Idioma</property>
+                                            <child>
+                                              <object class="GtkDropDown" id="setup_lang_dropdown">
+                                                <property name="valign">center</property>
+                                                <property name="model">
+                                                  <object class="GtkStringList">
+                                                    <items>
+                                                      <item translatable="yes">Español</item>
+                                                      <item translatable="yes">English</item>
+                                                    </items>
+                                                  </object>
+                                                </property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="AdwActionRow">
+                                            <property name="title" translatable="yes">Modo Oscuro</property>
+                                            <child>
+                                              <object class="GtkSwitch" id="setup_dark_switch">
+                                                <property name="valign">center</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkButton">
+                                    <property name="label" translatable="yes">Siguiente</property>
+                                    <property name="halign">center</property>
+                                    <property name="margin-top">24</property>
+                                    <style><class name="pill"/></style>
+                                    <signal name="clicked" handler="on_setup_next_clicked"/>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                            <!-- Step 3: Managers -->
+                            <child>
+                              <object class="AdwStatusPage">
+                                <property name="title" translatable="yes">Gestores de Paquetes</property>
+                                <property name="description" translatable="yes">Activa los métodos que quieres usar para instalar apps.</property>
+                                <child>
+                                  <object class="AdwClamp">
+                                    <child>
+                                      <object class="GtkListBox" id="setup_managers_list">
+                                        <property name="selection-mode">none</property>
+                                        <style><class name="boxed-list"/></style>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkButton">
+                                    <property name="label" translatable="yes">Finalizar</property>
+                                    <property name="halign">center</property>
+                                    <property name="margin-top">24</property>
+                                    <style><class name="pill"/><class name="suggested-action"/></style>
+                                    <signal name="clicked" handler="on_setup_finish_clicked"/>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="AdwCarouselIndicatorDots">
+                            <property name="carousel">setup_carousel</property>
+                            <property name="margin-bottom">24</property>
+                          </object>
+                        </child>
+                      </object>
+                    </property>
+                  </object>
+                </property>
+              </object>
+            </child>
+
+            <!-- MAIN APP -->
+            <child>
+              <object class="AdwViewStackPage">
+                <property name="name">main</property>
+                <property name="child">
+                  <object class="AdwToolbarView">
+                    <child type="top">
+                      <object class="AdwHeaderBar">
+                        <property name="title-widget">
+                          <object class="AdwViewSwitcher">
+                            <property name="stack">view_stack</property>
+                            <property name="policy">wide</property>
+                          </object>
+                        </property>
+                        <child type="end">
+                          <object class="GtkMenuButton">
+                            <property name="icon-name">open-menu-symbolic</property>
+                            <property name="menu-model">primary_menu</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <property name="content">
+                      <object class="AdwViewStack" id="view_stack">
+                        <!-- INICIO -->
+                        <child>
+                          <object class="AdwViewStackPage">
+                            <property name="name">home</property>
+                            <property name="title" translatable="yes">Inicio</property>
+                            <property name="icon-name">go-home-symbolic</property>
+                            <property name="child">
+                              <object class="GtkBox">
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <object class="GtkSearchEntry" id="search_entry">
+                                    <property name="margin-all">12</property>
+                                    <property name="placeholder-text" translatable="yes">Busca lo que necesites...</property>
+                                    <signal name="activate" handler="on_search_activated"/>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkScrolledWindow">
+                                    <property name="vexpand">True</property>
+                                    <child>
+                                      <object class="AdwClamp">
+                                        <child>
+                                          <object class="GtkBox">
+                                            <property name="orientation">vertical</property>
+                                            <property name="spacing">24</property>
+                                            <property name="margin-top">12</property>
+                                            <property name="margin-bottom">32</property>
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <property name="label" translatable="yes">Selección para ti</property>
+                                                <property name="halign">start</property>
+                                                <style><class name="title-2"/><class name="bold"/></style>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkFlowBox" id="apps_flowbox">
+                                                <property name="homogeneous">True</property>
+                                                <property name="min-children-per-line">2</property>
+                                                <property name="max-children-per-line">5</property>
+                                                <property name="selection-mode">none</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </property>
+                          </object>
+                        </child>
+
+                        <!-- ACTUALIZACIONES -->
+                        <child>
+                          <object class="AdwViewStackPage">
+                            <property name="name">updates</property>
+                            <property name="title" translatable="yes">Actualizaciones</property>
+                            <property name="icon-name">software-update-available-symbolic</property>
+                            <property name="child">
+                              <object class="AdwToolbarView">
+                                <child type="top">
+                                  <object class="AdwHeaderBar">
+                                    <child type="end">
+                                      <object class="GtkButton">
+                                        <property name="icon-name">view-refresh-symbolic</property>
+                                        <signal name="clicked" handler="on_refresh_updates_clicked"/>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <property name="content">
+                                  <object class="AdwViewStack" id="updates_stack">
+                                    <child>
+                                      <object class="AdwViewStackPage">
+                                        <property name="name">loading</property>
+                                        <property name="child">
+                                          <object class="GtkBox">
+                                            <property name="orientation">vertical</property>
+                                            <property name="valign">center</property>
+                                            <property name="spacing">12</property>
+                                            <child>
+                                              <object class="GtkSpinner">
+                                                <property name="spinning">True</property>
+                                                <property name="width-request">48</property>
+                                                <property name="height-request">48</property>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <property name="label" translatable="yes">Buscando actualizaciones...</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="AdwViewStackPage">
+                                        <property name="name">results</property>
+                                        <property name="child">
+                                          <object class="AdwStatusPage" id="updates_status_page">
+                                            <property name="icon-name">software-update-available-symbolic</property>
+                                            <child>
+                                              <object class="AdwClamp">
+                                                <child>
+                                                  <object class="GtkBox">
+                                                    <property name="orientation">vertical</property>
+                                                    <property name="spacing">12</property>
+                                                    <child>
+                                                      <object class="GtkLabel" id="last_updated_label">
+                                                        <property name="label">Última comprobación: Nunca</property>
+                                                        <style><class name="dim-label"/></style>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkListBox" id="updates_list">
+                                                        <property name="selection-mode">none</property>
+                                                        <style><class name="boxed-list"/></style>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkButton" id="update_all_button">
+                                                        <property name="label" translatable="yes">Actualizar Todo</property>
+                                                        <property name="halign">center</property>
+                                                        <style><class name="pill"/><class name="suggested-action"/></style>
+                                                        <signal name="clicked" handler="on_update_all_clicked"/>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </property>
+                              </object>
+                            </property>
+                          </object>
+                        </child>
+
+                        <!-- CONFIGURACIÓN -->
+                        <child>
+                          <object class="AdwViewStackPage">
+                            <property name="name">settings</property>
+                            <property name="title" translatable="yes">Configuración</property>
+                            <property name="icon-name">emblem-system-symbolic</property>
+                            <property name="child">
+                              <object class="AdwPreferencesPage">
+                                <child>
+                                  <object class="AdwPreferencesGroup">
+                                    <property name="title" translatable="yes">General</property>
+                                    <child>
+                                      <object class="AdwActionRow">
+                                        <property name="title" translatable="yes">Idioma</property>
+                                        <child>
+                                          <object class="GtkDropDown" id="settings_lang_dropdown">
+                                            <property name="valign">center</property>
+                                            <property name="model">
+                                              <object class="GtkStringList">
+                                                <items>
+                                                  <item translatable="yes">Español</item>
+                                                  <item translatable="yes">English</item>
+                                                </items>
+                                              </object>
+                                            </property>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="AdwActionRow">
+                                        <property name="title" translatable="yes">Modo Oscuro</property>
+                                        <child>
+                                          <object class="GtkSwitch" id="settings_dark_switch">
+                                            <property name="valign">center</property>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="AdwSwitchRow" id="auto_update_switch">
+                                        <property name="title" translatable="yes">Actualizaciones Automáticas</property>
+                                        <property name="subtitle" translatable="yes">Comprobar periódicamente si hay nuevas versiones.</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="AdwPreferencesGroup" id="settings_managers_group">
+                                    <property name="title" translatable="yes">Gestores de Paquetes</property>
+                                  </object>
+                                </child>
+                              </object>
+                            </property>
+                          </object>
+                        </child>
+                      </object>
+                    </property>
+                  </object>
+                </property>
+              </object>
+            </child>
+
+            <!-- DETALLES -->
+            <child>
+              <object class="AdwViewStackPage">
+                <property name="name">details</property>
+                <property name="child">
+                  <object class="AdwToolbarView">
+                    <child type="top">
+                      <object class="AdwHeaderBar">
+                        <child type="start">
+                          <object class="GtkButton">
+                            <property name="icon-name">go-previous-symbolic</property>
+                            <signal name="clicked" handler="on_back_clicked"/>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <property name="content">
+                      <object class="GtkScrolledWindow">
+                        <child>
+                          <object class="AdwClamp">
+                            <child>
+                              <object class="GtkBox">
+                                <property name="orientation">vertical</property>
+                                <property name="spacing">32</property>
+                                <property name="margin-top">64</property>
+                                <property name="margin-bottom">64</property>
+                                <child>
+                                  <object class="GtkImage" id="detail_icon">
+                                    <property name="pixel-size">160</property>
+                                    <style><class name="app-icon-shadow"/></style>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="detail_name">
+                                    <property name="halign">center</property>
+                                    <style><class name="luxury-title"/></style>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="detail_action_button">
+                                    <property name="halign">center</property>
+                                    <property name="width-request">200</property>
+                                    <style><class name="pill"/><class name="luxury-button"/></style>
+                                    <signal name="clicked" handler="on_detail_action_clicked"/>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="detail_desc">
+                                    <property name="wrap">True</property>
+                                    <property name="justify">center</property>
+                                    <property name="max-width-chars">70</property>
+                                    <style><class name="body"/></style>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </property>
+                  </object>
+                </property>
+              </object>
+            </child>
+          </object>
+        </property>
+      </object>
+    </property>
+  </template>
+  <menu id="primary_menu">
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">Acerca de Epola</attribute>
+        <attribute name="action">app.about</attribute>
+      </item>
+    </section>
+  </menu>
+</interface>
